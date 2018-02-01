@@ -7,15 +7,13 @@ import time
 ##Matrix size
 X = 20
 Y = 20
-goal = [18, 16]
+goal = [18, 18]
 # Call this function so the Pygame library can initialize itself
 pygame.init()
 # Create an 700x700 sized screen
 SCREEN = pygame.display.set_mode([700, 700])
 # Set the title of the window
 pygame.display.set_caption('Maze solver')
-# Init the a font
-
 
 class Matrix():
     def __init__(self):
