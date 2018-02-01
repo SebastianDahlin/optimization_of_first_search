@@ -2,7 +2,7 @@
 A maze searcher that first searches the area for a goal and then optimizes the known route to get there.
 
 Intro:
-An [n,m] sized maze is introduced to a solver. 
+An [n,n] sized maze is introduced to a solver. 
 The solver will have a start position and will only know it has reached a goal when the goal is reached.
 The solver can only move up, down, right and left.
 
