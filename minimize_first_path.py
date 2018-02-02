@@ -3,17 +3,7 @@ import sys
 import random
 import time
 
-###--Define stuff--###
-##Matrix size
-X = 20
-Y = 20
-goal = [18, 18]
-# Call this function so the Pygame library can initialize itself
-pygame.init()
-# Create an 700x700 sized screen
-SCREEN = pygame.display.set_mode([700, 700])
-# Set the title of the window
-pygame.display.set_caption('Maze solver')
+
 
 class Matrix():
     def __init__(self):
@@ -58,6 +48,8 @@ class Matrix():
             self.player[0] += 1
         if move == 'L':
             self.player[0] -= 1
+        #Set the visited to yes
+        matrix.matrix[self.player[0]][self.player[1]]['Visited'] = True
         # Set the step_count
         possible_sc = []
         neighbour_sc = []
@@ -118,7 +110,17 @@ def render():
 
 #Main program
 ##--Init stuff--#
-
+###--Define stuff--###
+##Matrix size
+X = 50
+Y = 50
+goal = [48, 48]
+# Call this function so the Pygame library can initialize itself
+pygame.init()
+# Create an 700x700 sized screen
+SCREEN = pygame.display.set_mode([700, 700])
+# Set the title of the window
+pygame.display.set_caption('Maze solver')
 matrix = Matrix()
 do_again = True
 # Start by finding the goal and while doing so plotting the shortest amount of steps available to get to a coordinate
