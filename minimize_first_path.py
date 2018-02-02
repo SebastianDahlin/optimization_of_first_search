@@ -112,9 +112,9 @@ def render():
 ##--Init stuff--#
 ###--Define stuff--###
 ##Matrix size
-X = 50
-Y = 50
-goal = [48, 48]
+X = 15
+Y = 15
+goal = [14, 14]
 # Call this function so the Pygame library can initialize itself
 pygame.init()
 # Create an 700x700 sized screen
@@ -138,44 +138,55 @@ while do_again is True:
 # Back track from goal to start
 back_track = goal
 while tot_step is not 0:
-    possible_bt = []
-    neighbour_bt = []
-    if back_track[1] < Y -1:
-        possible_bt.append('U')
-    if back_track[1] -1 >= 0:
-        possible_bt.append('D')
-    if back_track[0] < X -1:
-        possible_bt.append('R')
-    if back_track[0] -1 >= 0:
-        possible_bt.append('L')
-    found = False    
-    while found is False:
-        if 'L' in possible_bt: 
-            step_count = int(matrix.matrix[back_track[0]-1][back_track[1]]['step_count'])
-            if step_count == tot_step -1:
-                found = True
-                tot_step = tot_step - 1
-                back_track[0] = back_track[0] - 1
-        if 'R' in possible_bt and found is False:
-            step_count = matrix.matrix[back_track[0]+1][back_track[1]]['step_count']
-            if step_count == tot_step -1:
-                found = True
-                tot_step = tot_step - 1
-                back_track[0] = back_track[0] + 1
-        if 'U' in possible_bt and found is False:
-            step_count = matrix.matrix[back_track[0]][back_track[1]+1]['step_count']
-            if step_count == tot_step -1:
-                found = True
-                tot_step = tot_step - 1
-                back_track[1] = back_track[1] + 1
-        if 'D' in possible_bt and found is False:
-            step_count = matrix.matrix[back_track[0]][back_track[1]-1]['step_count']
-            if step_count == tot_step -1:
-                found = True
-                tot_step = tot_step - 1
-                back_track[1] = back_track[1] - 1
-        matrix.matrix[back_track[0]][back_track[1]]['fill'] = 1
-        render()
+    if tot_step > 1:
+        print(back_track)
+        print(tot_step)
+        possible_bt = []
+        neighbour_bt = []
+        if back_track[1] < Y -1:
+            possible_bt.append('U')
+        if back_track[1] -1 >= 0:
+            possible_bt.append('D')
+        if back_track[0] < X -1:
+            possible_bt.append('R')
+        if back_track[0] -1 >= 0:
+            possible_bt.append('L')
+        found = False    
+        while found is False:
+            if 'L' in possible_bt: 
+                step_count = int(matrix.matrix[back_track[0]-1][back_track[1]]['step_count'])
+                if step_count == tot_step -1:
+                    found = True
+                    tot_step = tot_step - 1
+                    back_track[0] = back_track[0] - 1
+            if 'R' in possible_bt and found is False:
+                step_count = matrix.matrix[back_track[0]+1][back_track[1]]['step_count']
+                if step_count == tot_step -1:
+                    found = True
+                    tot_step = tot_step - 1
+                    back_track[0] = back_track[0] + 1
+            if 'U' in possible_bt and found is False:
+                step_count = matrix.matrix[back_track[0]][back_track[1]+1]['step_count']
+                if step_count == tot_step -1:
+                    found = True
+                    tot_step = tot_step - 1
+                    back_track[1] = back_track[1] + 1
+            if 'D' in possible_bt and found is False:
+                step_count = matrix.matrix[back_track[0]][back_track[1]-1]['step_count']
+                if step_count == tot_step -1:
+                    found = True
+                    tot_step = tot_step - 1
+                    back_track[1] = back_track[1] - 1
+    else:
+        print(back_track)
+        print(tot_step)
+        found = True
+        back_track = [0, 0]
+        print(back_track)
+        tot_step = 0
+    matrix.matrix[back_track[0]][back_track[1]]['fill'] = 1
+    render()
+        
 time.sleep(15)
 
 pygame.QUIT
