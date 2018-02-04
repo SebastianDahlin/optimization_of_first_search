@@ -28,14 +28,7 @@ class Matrix():
           'fill': 0,
           'Visited' : False} for i in range(X)] for j in range(Y)]
 
-        #Methods
-    def p_move(self):
-        # Assign player coordinates to variables
-        p_x = self.player[0]
-        p_y = self.player[1]
-        # Get possible moves for the player
-        possible = possible_moves(p_x, p_y)
-        # Get the best move for the player
+    def get_best_move(self, p_x, p_y, possible):
         best_move = []
         if 'L' in possible and self.matrix[p_x-1][p_y]['Visited'] == False:
                 best_move.append('L')
@@ -45,8 +38,22 @@ class Matrix():
                 best_move.append('U')
         if 'D' in possible and self.matrix[p_x][p_y-1]['Visited'] == False:
                 best_move.append('D')
+        return(best_move)
+
+
+        #Methods
+    def p_move(self):
+        # Assign player coordinates to variables
+        p_x = self.player[0]
+        p_y = self.player[1]
+        # Get possible moves for the player
+        possible = possible_moves(p_x, p_y)
+        # Get the best move for the player
+        best_move = self.get_best_move(p_x, p_y, possible)
+        # Select a best move if possible
         if len(best_move)>0:
             move = random.choice(best_move)
+        # If no possible "best move" available, choose one at random from possible  
         else:
             move = random.choice(possible)
         if move == 'U':
@@ -66,6 +73,7 @@ class Matrix():
         # Create a neighbour step count list
         neighbour_sc = []
         # If current position equals start set the step count to zero.
+        ## QUP: Makke the statements below be more general
         if self.player == [0, 0]:
             matrix.matrix[p_x][p_y]['step_count'] = 0
         elif self.player == [1,0] or self.player == [0,1]:
