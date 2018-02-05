@@ -3,6 +3,9 @@ import sys
 import random
 import time
 
+#Constants needed
+
+
 def possible_moves(p_x, p_y):
     '''This function checks that the p_x and p_y input are not next to a boarder'''
     possible = []
@@ -28,18 +31,18 @@ class Matrix():
           'fill': 0,
           'Visited' : False} for i in range(X)] for j in range(Y)]
 
-    def get_best_move(self, p_x, p_y, possible):
+    def get_best_move(self, x, y, possible, key_string):
         best_move = []
-        if 'L' in possible and self.matrix[p_x-1][p_y]['Visited'] == False:
-                best_move.append('L')
-        if 'R' in possible and self.matrix[p_x+1][p_y]['Visited'] == False:
-                best_move.append('R')
-        if 'U' in possible and self.matrix[p_x][p_y+1]['Visited'] == False:
-                best_move.append('U')
-        if 'D' in possible and self.matrix[p_x][p_y-1]['Visited'] == False:
-                best_move.append('D')
-        return(best_move)
-
+        dir_list = ['L', 'R', 'U', 'D']
+        x_list = [x-1, x+1, x, x]
+        y_list = [y, y, y+1, y-1]
+        for rikt, x_dir, y_dir in zip(dir_list, x_list, y_list):
+            if rikt in possible:
+                if key_string == 'Visited' and self.matrix[x_dir][y_dir]['Visited'] is False:
+                    best_move.append(rikt)
+                if key_string == 'step_count' and self.matrix[x_dir][y_dir]['step_count'] > 0:
+                    best_move.append(self.matrix[x_dir][y_dir]['step_count'])
+        return best_move
 
         #Methods
     def p_move(self):
@@ -49,7 +52,7 @@ class Matrix():
         # Get possible moves for the player
         possible = possible_moves(p_x, p_y)
         # Get the best move for the player
-        best_move = self.get_best_move(p_x, p_y, possible)
+        best_move = self.get_best_move(p_x, p_y, possible, 'Visited')
         # Select a best move if possible
         if len(best_move)>0:
             move = random.choice(best_move)
@@ -79,23 +82,7 @@ class Matrix():
         elif self.player == [1,0] or self.player == [0,1]:
             matrix.matrix[p_x][p_y]['step_count'] = 1
         else:
-            if 'L' in possible_sc: 
-                step_count = matrix.matrix[p_x-1][p_y]['step_count']
-                if step_count > 0:
-                    neighbour_sc.append(step_count)
-            if 'R' in possible_sc:
-                step_count = matrix.matrix[p_x+1][p_y]['step_count']
-                if step_count >0:
-                    neighbour_sc.append(step_count)
-            if 'U' in possible_sc:
-                step_count = matrix.matrix[p_x][p_y+1]['step_count']
-                if step_count >0:
-                    neighbour_sc.append(step_count)
-            if 'D' in possible_sc:
-                step_count = matrix.matrix[p_x][p_y-1]['step_count']
-                if step_count > 0:
-                    neighbour_sc.append(step_count)
-            # Set own stepcount
+            neighbour_sc = self.get_best_move(p_x, p_y, possible_sc, 'step_count')
             smallest = min(int(s) for s in neighbour_sc)
             matrix.matrix[self.player[0]][self.player[1]]['step_count'] = smallest + 1
             
@@ -152,16 +139,11 @@ while do_again is True:
 back_track = goal
 while tot_step is not 0:
     if tot_step > 1:
-        possible_bt = []
+        # Get possible moves
+        b_x = back_track[0]
+        b_y = back_track[1]
+        possible_bt = possible_moves(b_x, b_y)
         neighbour_bt = []
-        if back_track[1] < Y -1:
-            possible_bt.append('U')
-        if back_track[1] -1 >= 0:
-            possible_bt.append('D')
-        if back_track[0] < X -1:
-            possible_bt.append('R')
-        if back_track[0] -1 >= 0:
-            possible_bt.append('L')
         found = False    
         while found is False:
             if 'L' in possible_bt: 
